@@ -10,7 +10,7 @@ const styles = {
     textAlign: 'center',
     backgroundColor: '#f8f9fa',
     color: '#343a40',
-    padding: '20px',
+    padding: '0',
     fontFamily: 'Arial, sans-serif',
   },
   icon: {
@@ -31,6 +31,7 @@ const styles = {
     fontSize: '1rem',
     color: '#6c757d',
     marginTop: '15px',
+    MarginBottom: '20px',
   },
 };
 
@@ -41,20 +42,39 @@ class HomePage extends React.Component {
     message: 'Estamos aprimorando nossa plataforma para melhor servi-lo. Voltaremos em breve com novidades! Pedimos desculpas pelo inconveniente.',
     contact: 'contato@jgluciano.dev',
   };
+  componentDidMount() {
+    try {
+      this._prevBodyOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+    } catch (e) {
+    }
+  }
+
+  componentWillUnmount() {
+    try {
+      document.body.style.overflow = this._prevBodyOverflow || '';
+    } catch (e) {
+    }
+  }
 
   render() {
     const { title, message, contact } = this.state;
     return (
-      <div style={styles.container}>
-        <span role="img" aria-label="construction" style={styles.icon}>🚧</span>
-        <h1 style={styles.title}>{title}</h1>
-        <p style={styles.message}>{message}</p>
-        {contact && (
-          <p style={styles.contact}>
-            Para informações imediatas, por favor, envie um e-mail para: <strong>{contact}</strong>
-          </p>
-        )}
-      </div>
+      <>
+        <style jsx global>{`
+          body { overflow: hidden; }
+        `}</style>
+        <div style={styles.container}>
+          <span role="img" aria-label="construction" style={styles.icon}>🚧</span>
+          <h1 style={styles.title}>{title}</h1>
+          <p style={styles.message}>{message}</p>
+          {contact && (
+            <p style={styles.contact}>
+              Para informações imediatas, por favor, envie um e-mail para: <strong>{contact}</strong>
+            </p>
+          )}
+        </div>
+      </>
     );
   }
 }
